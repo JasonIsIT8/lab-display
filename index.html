@@ -39,15 +39,14 @@
       padding: 2rem 1.5rem;
     }
 
-    /* ── Outer wrapper ── */
     .page {
-      width: min(1000px, 100%);
+      width: min(1100px, 100%);
       display: flex;
       flex-direction: column;
       gap: 16px;
     }
 
-    /* ── Top header bar — full width ── */
+    /* ── Header ── */
     .header {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -67,9 +66,7 @@
       height: 3px;
       background: linear-gradient(90deg, var(--accent), #79c0ff, var(--accent));
     }
-
     .header-left { display: flex; flex-direction: column; gap: 4px; }
-
     .lab-name {
       font-size: 2rem;
       font-weight: 700;
@@ -77,11 +74,7 @@
       letter-spacing: -0.02em;
       line-height: 1.1;
     }
-    .lab-location {
-      font-size: 1rem;
-      color: var(--text-sub);
-    }
-
+    .lab-location { font-size: 1rem; color: var(--text-sub); }
     .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
 
     .status-pill {
@@ -115,22 +108,21 @@
       text-align: right;
     }
 
-    /* ── Two-column body ── */
+    /* ── Three columns ── */
     .columns {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 16px;
       align-items: start;
     }
 
-    /* ── Shared tile style ── */
+    /* ── Shared tile ── */
     .tile {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 14px;
       overflow: hidden;
     }
-
     .tile-header {
       display: flex;
       align-items: center;
@@ -153,7 +145,6 @@
       letter-spacing: 0.1em;
       color: var(--text-sub);
     }
-
     .tile-body { padding: 0.5rem 1.25rem 1.25rem; }
 
     /* ── Hours rows ── */
@@ -168,16 +159,13 @@
     }
     .hours-row:hover { background: var(--row-hover); }
     .hours-row.is-today { background: var(--accent-bg); }
-
     .day-col { display: flex; align-items: center; gap: 10px; }
-
     .day-label {
       font-size: 1.05rem;
       font-weight: 500;
       color: var(--text-sub);
     }
     .hours-row.is-today .day-label { color: var(--today-hl); font-weight: 600; }
-
     .today-badge {
       font-size: 0.6rem;
       font-weight: 700;
@@ -188,7 +176,6 @@
       background: var(--accent);
       color: #0d1117;
     }
-
     .hours-val {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.95rem;
@@ -197,13 +184,6 @@
     }
     .hours-val.is-closed { color: var(--text-sub); font-style: italic; font-weight: 400; }
     .hours-row.is-today .hours-val { color: var(--today-hl); }
-
-    /* ── Right column: stacked tiles ── */
-    .right-col {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
 
     /* ── Manager tile ── */
     .manager-nameplate {
@@ -225,19 +205,10 @@
       color: var(--accent);
       flex-shrink: 0;
     }
-    .manager-name {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: var(--text);
-    }
-    .manager-role {
-      font-size: 0.82rem;
-      color: var(--text-sub);
-      margin-top: 3px;
-    }
+    .manager-name { font-size: 1.2rem; font-weight: 600; color: var(--text); }
+    .manager-role { font-size: 0.82rem; color: var(--text-sub); margin-top: 3px; }
 
     .contact-list { display: flex; flex-direction: column; gap: 10px; }
-
     .contact-row {
       display: flex;
       align-items: center;
@@ -263,44 +234,47 @@
       letter-spacing: 0.09em;
       color: var(--text-sub);
     }
-    .contact-val {
-      font-size: 0.95rem;
-      font-weight: 500;
-      color: var(--text);
-    }
+    .contact-val { font-size: 0.95rem; font-weight: 500; color: var(--text); }
 
     /* ── Staff location tile ── */
-    .staff-tile .tile-header { border-color: rgba(88,166,255,0.3); }
-    .staff-tile { border-color: rgba(88,166,255,0.25); }
-
-    .staff-location-display {
+    .loc-body {
+      padding: 1.5rem 1.75rem;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 16px;
-      padding: 1.25rem 1.75rem;
+      justify-content: center;
+      gap: 1rem;
+      text-align: center;
+      min-height: 160px;
     }
-    .staff-loc-icon {
-      width: 44px; height: 44px;
-      border-radius: 12px;
-      background: var(--accent-bg);
-      border: 1.5px solid var(--accent);
+    .loc-icon-wrap {
+      width: 60px; height: 60px;
+      border-radius: 16px;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
-      color: var(--accent);
+      transition: background 0.4s, border-color 0.4s;
     }
-    .staff-loc-text { display: flex; flex-direction: column; gap: 3px; }
-    .staff-loc-label {
-      font-size: 0.7rem;
+    .loc-icon-wrap.is-open   { background: var(--open-bg);   border: 1.5px solid var(--open);       color: var(--open); }
+    .loc-icon-wrap.is-closed { background: var(--closed-bg); border: 1.5px solid var(--closed-clr); color: var(--closed-clr); }
+    .loc-icon-wrap.is-away   { background: #2d2208;          border: 1.5px solid #d29922;            color: #d29922; }
+
+    .loc-status-label {
+      font-size: 0.65rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.12em;
       color: var(--text-sub);
     }
-    .staff-loc-val {
-      font-size: 1.15rem;
-      font-weight: 600;
+    .loc-value {
+      font-size: 1.3rem;
+      font-weight: 700;
       color: var(--text);
+      line-height: 1.2;
+      transition: color 0.4s;
     }
+    .loc-value.is-open   { color: var(--open); }
+    .loc-value.is-closed { color: var(--closed-clr); }
+    .loc-value.is-away   { color: #d29922; }
 
     /* ── Footer ── */
     .footer {
@@ -308,8 +282,8 @@
       justify-content: space-between;
       align-items: center;
       padding: 0.9rem 1.75rem;
-      border-top: 1px solid var(--border);
       background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: 14px;
     }
     .sync-row {
@@ -343,8 +317,8 @@
       font-size: 0.9rem;
     }
 
-    /* ── Responsive: stack on narrow screens ── */
-    @media (max-width: 640px) {
+    /* ── Responsive ── */
+    @media (max-width: 800px) {
       .columns { grid-template-columns: 1fr; }
       .header { flex-direction: column; align-items: flex-start; }
       .header-right { align-items: flex-start; }
@@ -354,7 +328,7 @@
 <body>
 <div class="page">
 
-  <!-- Full-width header -->
+  <!-- Header -->
   <div class="header">
     <div class="header-left">
       <div class="lab-name" id="labName">Loading…</div>
@@ -369,10 +343,10 @@
     </div>
   </div>
 
-  <!-- Two columns -->
+  <!-- Three columns -->
   <div class="columns">
 
-    <!-- LEFT: Hours -->
+    <!-- COL 1: Hours -->
     <div class="tile">
       <div class="tile-header">
         <div class="tile-icon">
@@ -382,56 +356,54 @@
       </div>
       <div class="tile-body">
         <div id="hoursContainer">
-          <div class="hours-row"><span class="skel" style="width:85px;height:15px"></span><span class="skel" style="width:130px;height:15px"></span></div>
-          <div class="hours-row"><span class="skel" style="width:70px;height:15px"></span><span class="skel" style="width:130px;height:15px"></span></div>
-          <div class="hours-row"><span class="skel" style="width:100px;height:15px"></span><span class="skel" style="width:130px;height:15px"></span></div>
+          <div class="hours-row"><span class="skel" style="width:85px;height:15px"></span><span class="skel" style="width:120px;height:15px"></span></div>
+          <div class="hours-row"><span class="skel" style="width:70px;height:15px"></span><span class="skel" style="width:120px;height:15px"></span></div>
+          <div class="hours-row"><span class="skel" style="width:100px;height:15px"></span><span class="skel" style="width:120px;height:15px"></span></div>
         </div>
       </div>
     </div>
 
-    <!-- RIGHT: stacked tiles -->
-    <div class="right-col">
-
-      <!-- Lab Manager tile -->
-      <div class="tile">
-        <div class="tile-header">
-          <div class="tile-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          </div>
-          <span class="tile-title">Lab Manager</span>
+    <!-- COL 2: Lab Manager -->
+    <div class="tile">
+      <div class="tile-header">
+        <div class="tile-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </div>
-        <div class="tile-body">
-          <div class="manager-nameplate">
-            <div class="avatar" id="managerAvatar">?</div>
-            <div>
-              <div class="manager-name" id="managerName">—</div>
-              <div class="manager-role">Computer Lab Manager</div>
-            </div>
-          </div>
-          <div class="contact-list" id="contactList"></div>
-        </div>
+        <span class="tile-title">Lab Manager</span>
       </div>
-
-      <!-- Staff Location tile -->
-      <div class="tile staff-tile">
-        <div class="tile-header">
-          <div class="tile-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          </div>
-          <span class="tile-title">Staff Location</span>
-        </div>
-        <div class="staff-location-display">
-          <div class="staff-loc-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          </div>
-          <div class="staff-loc-text">
-            <span class="staff-loc-label">Currently Located At</span>
-            <span class="staff-loc-val" id="staffLocVal">—</span>
+      <div class="tile-body">
+        <div class="manager-nameplate">
+          <div class="avatar" id="managerAvatar">?</div>
+          <div>
+            <div class="manager-name" id="managerName">—</div>
+            <div class="manager-role">Computer Lab Manager</div>
           </div>
         </div>
+        <div class="contact-list" id="contactList"></div>
       </div>
-
     </div>
+
+    <!-- COL 3: Staff Location -->
+    <div class="tile">
+      <div class="tile-header">
+        <div class="tile-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <span class="tile-title">Staff Location</span>
+      </div>
+      <div class="loc-body">
+        <div class="loc-icon-wrap is-closed" id="locIcon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="locIconSvg">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+          </svg>
+        </div>
+        <div>
+          <div class="loc-status-label">Currently Located</div>
+          <div class="loc-value is-closed" id="locValue">—</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- Footer -->
@@ -444,10 +416,10 @@
   </div>
 
 </div>
-
 <script>
   const DAYS       = ['monday','tuesday','wednesday','thursday','friday'];
   const DAY_LABELS = ['Monday','Tuesday','Wednesday','Thursday','Friday'];
+  const ALL_DAYS   = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
   const REFRESH_MS = 60000;
 
   // ── Clock ──────────────────────────────────────────────────────────────────
@@ -464,9 +436,14 @@
     office: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
   };
 
+  // SVG paths for location icon states
+  const SVG_PIN  = `<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>`;
+  const SVG_DOOR = `<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>`;
+  const SVG_MOON = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>`;
+
   // ── Render hours ───────────────────────────────────────────────────────────
   function renderHours(hours) {
-    const todayKey = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'][new Date().getDay()];
+    const todayKey = ALL_DAYS[new Date().getDay()];
     document.getElementById('hoursContainer').innerHTML = DAYS.map((key, i) => {
       const val      = hours[key] || 'Closed';
       const isToday  = key === todayKey;
@@ -483,13 +460,46 @@
 
   // ── Render status pill ─────────────────────────────────────────────────────
   function renderStatus(hours) {
-    const key    = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'][new Date().getDay()];
+    const key    = ALL_DAYS[new Date().getDay()];
     const val    = hours[key] || 'Closed';
     const isOpen = val.toLowerCase() !== 'closed';
     const pill   = document.getElementById('statusPill');
     pill.className = `status-pill ${isOpen ? 'open' : 'closed'}`;
     document.getElementById('statusText').textContent =
       isOpen ? `Open Today  ·  ${val}` : 'Gone for the Day';
+    return isOpen;
+  }
+
+  // ── Render staff location tile ─────────────────────────────────────────────
+  // Logic:
+  //   Lab is CLOSED (per schedule) → always "Gone for the Day" — cannot be overridden
+  //   Lab is OPEN + status is set  → show the custom status (yellow/away style)
+  //   Lab is OPEN + no status      → show "In the Lab" (green)
+  function renderLocation(isOpen, manager) {
+    const locIcon = document.getElementById('locIcon');
+    const locVal  = document.getElementById('locValue');
+    const locSvg  = document.getElementById('locIconSvg');
+    const override = (manager.status || '').trim();
+
+    if (!isOpen) {
+      // Schedule says closed — hard override, always "Gone for the Day"
+      locIcon.className  = 'loc-icon-wrap is-closed';
+      locVal.className   = 'loc-value is-closed';
+      locVal.textContent = 'Gone for the Day';
+      locSvg.innerHTML   = SVG_MOON;
+    } else if (override) {
+      // Lab is open but a manual status is set in the JSON
+      locIcon.className  = 'loc-icon-wrap is-away';
+      locVal.className   = 'loc-value is-away';
+      locVal.textContent = override;
+      locSvg.innerHTML   = SVG_PIN;
+    } else {
+      // Lab is open, no override — default to "In the Lab"
+      locIcon.className  = 'loc-icon-wrap is-open';
+      locVal.className   = 'loc-value is-open';
+      locVal.textContent = 'In the Lab';
+      locSvg.innerHTML   = SVG_DOOR;
+    }
   }
 
   // ── Render contact ─────────────────────────────────────────────────────────
@@ -513,10 +523,6 @@
           <span class="contact-val">${c.val}</span>
         </div>
       </div>`).join('');
-
-    // Staff location tile
-    const loc = manager.staff_location || '—';
-    document.getElementById('staffLocVal').textContent = loc;
   }
 
   // ── Sync indicator ─────────────────────────────────────────────────────────
@@ -536,9 +542,10 @@
       document.getElementById('labName').textContent     = data.lab_name || 'Computer Lab';
       document.getElementById('labLocation').textContent = data.location || '';
 
-      renderHours(data.hours   || {});
-      renderStatus(data.hours  || {});
+      renderHours(data.hours || {});
+      const isOpen = renderStatus(data.hours || {});
       renderContact(data.manager || {});
+      renderLocation(isOpen, data.manager || {});
 
       const t = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       document.getElementById('syncText').textContent = `Last synced ${t}`;
