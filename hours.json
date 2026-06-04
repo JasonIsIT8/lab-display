@@ -9,9 +9,11 @@
     "friday":    "Closed"
   },
   "manager": {
-    "name":   "Jason Hochmuth",
-    "email":  "jhochmuth1@irsc.edu",
-    "phone":  "(772) 462-7663",
-    "office": "Massey Campus, Building V, Room 116B"
+    "name":           "Jason Hochmuth",
+    "email":          "jhochmuth1@irsc.edu",
+    "phone":          "(772) 462-7663",
+    "office":         "Room 116B",
+    "staff_location": "Building W · Room 214",
+    "status":         ""
   }
 }
