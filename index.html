@@ -460,15 +460,62 @@
     }).join('');
   }
 
-  // ── Render status pill ─────────────────────────────────────────────────────
+  // ── Parse "9:00 AM" style time string into minutes since midnight ──────────
+  function parseTime(str) {
+    // Expects format like "9:00 AM" or "7:00 PM"
+    const match = str.trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+    if (!match) return null;
+    let hours = parseInt(match[1], 10);
+    const mins = parseInt(match[2], 10);
+    const period = match[3].toUpperCase();
+    if (period === 'AM' && hours === 12) hours = 0;
+    if (period === 'PM' && hours !== 12) hours += 12;
+    return hours * 60 + mins;
+  }
+
+  // ── Render status pill (time-aware) ────────────────────────────────────────
   function renderStatus(hours) {
-    const key    = ALL_DAYS[new Date().getDay()];
-    const val    = hours[key] || 'Closed';
-    const isOpen = val.toLowerCase() !== 'closed';
-    const pill   = document.getElementById('statusPill');
+    const key = ALL_DAYS[new Date().getDay()];
+    const val = hours[key] || 'Closed';
+    const pill = document.getElementById('statusPill');
+    let isOpen = false;
+
+    if (val.toLowerCase() === 'closed') {
+      // Day is scheduled closed
+      isOpen = false;
+    } else {
+      // Parse "9:00 AM – 7:00 PM" into open/close minutes
+      const parts = val.split('–').map(s => s.trim());
+      const openMins  = parts[0] ? parseTime(parts[0]) : null;
+      const closeMins = parts[1] ? parseTime(parts[1]) : null;
+      const now = new Date();
+      const nowMins = now.getHours() * 60 + now.getMinutes();
+
+      if (openMins !== null && closeMins !== null) {
+        isOpen = nowMins >= openMins && nowMins < closeMins;
+      } else {
+        // Couldn't parse times — fall back to treating the day as open
+        isOpen = true;
+      }
+    }
+
     pill.className = `status-pill ${isOpen ? 'open' : 'closed'}`;
     document.getElementById('statusText').textContent =
-      isOpen ? `Open Today  ·  ${val}` : 'Gone for the Day';
+      isOpen ? `Open Today  ·  ${val}` : 'Closed';
+
+    // Determine more granular time state for location tile
+    let timeState = 'closed'; // default
+    if (val.toLowerCase() !== 'closed') {
+      const parts    = val.split('–').map(s => s.trim());
+      const openMins  = parts[0] ? parseTime(parts[0]) : null;
+      const closeMins = parts[1] ? parseTime(parts[1]) : null;
+      const now       = new Date();
+      const nowMins   = now.getHours() * 60 + now.getMinutes();
+      if (openMins !== null && nowMins < openMins)   timeState = 'before';
+      else if (isOpen)                                timeState = 'open';
+      else                                            timeState = 'after';
+    }
+    return { isOpen, timeState };
     return isOpen;
   }
 
@@ -477,30 +524,38 @@
   //   Lab is CLOSED (per schedule) → always "Gone for the Day" — cannot be overridden
   //   Lab is OPEN + status is set  → show the custom status (yellow/away style)
   //   Lab is OPEN + no status      → show "In the Lab" (green)
-  function renderLocation(isOpen, manager) {
-    const locIcon = document.getElementById('locIcon');
-    const locVal  = document.getElementById('locValue');
-    const locSvg  = document.getElementById('locIconSvg');
+  function renderLocation(timeState, manager) {
+    const locIcon  = document.getElementById('locIcon');
+    const locVal   = document.getElementById('locValue');
+    const locSvg   = document.getElementById('locIconSvg');
     const override = (manager.status || '').trim();
 
-    if (!isOpen) {
-      // Schedule says closed — hard override, always "Gone for the Day"
+    if (timeState === 'before') {
+      // Before opening time — show "Closed"
       locIcon.className  = 'loc-icon-wrap is-closed';
       locVal.className   = 'loc-value is-closed';
-      locVal.textContent = 'Gone for the Day';
+      locVal.textContent = 'Closed';
       locSvg.innerHTML   = SVG_MOON;
-    } else if (override) {
-      // Lab is open but a manual status is set in the JSON
+    } else if (timeState === 'open' && override) {
+      // Lab is open but a manual status is set
       locIcon.className  = 'loc-icon-wrap is-away';
       locVal.className   = 'loc-value is-away';
       locVal.textContent = override;
       locSvg.innerHTML   = SVG_PIN;
-    } else {
-      // Lab is open, no override — default to "In the Lab"
+    } else if (timeState === 'open') {
+      // Lab is open, no override — "In the Lab"
       locIcon.className  = 'loc-icon-wrap is-open';
       locVal.className   = 'loc-value is-open';
       locVal.textContent = 'In the Lab';
       locSvg.innerHTML   = SVG_DOOR;
+    } else {
+      // After closing time — "Gone for the Day"
+      // Scheduled closed day or weekend — "Closed"
+      const isAfterHours = timeState === 'after';
+      locIcon.className  = 'loc-icon-wrap is-closed';
+      locVal.className   = 'loc-value is-closed';
+      locVal.textContent = isAfterHours ? 'Closed' : 'Closed';
+      locSvg.innerHTML   = SVG_MOON;
     }
   }
 
@@ -545,9 +600,9 @@
       document.getElementById('labLocation').textContent = data.location || '';
 
       renderHours(data.hours || {});
-      const isOpen = renderStatus(data.hours || {});
+      const { isOpen, timeState } = renderStatus(data.hours || {});
       renderContact(data.manager || {});
-      renderLocation(isOpen, data.manager || {});
+      renderLocation(timeState, data.manager || {});
 
       const t = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       document.getElementById('syncText').textContent = `Last synced ${t}`;
