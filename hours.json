@@ -2,10 +2,10 @@
   "lab_name": "CIT Computer Lab",
   "location": "Massey Campus, Building V · Room 116B",
   "Hours": {
-    "Monday":    "8:00 AM – 9:00 PM",
-    "Tuesday":   "8:00 AM – 9:00 PM",
-    "Wednesday": "8:00 AM – 9:00 PM",
-    "Thursday":  "8:00 AM – 9:00 PM",
+    "Monday":    "9:00 AM – 7:00 PM",
+    "Tuesday":   "9:00 AM – 7:00 PM",
+    "Wednesday": "9:00 AM – 7:00 PM",
+    "Thursday":  "9:00 AM – 7:00 PM",
     "Friday":    "Closed",
     "Saturday":  "Closed",
     "Sunday":    "Closed"
@@ -13,7 +13,7 @@
   "Lab Manager": {
     "Name":  "Jason Hochmuth",
     "Email": "jhochmuth1@irsc.edu",
-    "Office Number": "(772) xxx-xxxx",
+    "Office Number": "(772) xxx-7663",
     "office": "Room 204A"
   }
 }
