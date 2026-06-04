@@ -24,9 +24,9 @@
       --row-hover:  #1c2230;
       --today-hl:   #58a6ff;
     }
- 
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
- 
+
     html, body {
       min-height: 100vh;
       background: var(--bg);
@@ -37,15 +37,17 @@
       align-items: center;
       justify-content: center;
       padding: 1rem 2rem 2.5rem;
+      overflow: hidden;
+      overflow: hidden;
     }
- 
+
     .page {
       width: min(1380px, 100%);
       display: flex;
       flex-direction: column;
       gap: 20px;
     }
- 
+
     /* ── Header ── */
     .header {
       background: var(--surface);
@@ -76,7 +78,7 @@
     }
     .lab-location { font-size: 1.25rem; color: var(--text-sub); }
     .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
- 
+
     .status-pill {
       display: inline-flex;
       align-items: center;
@@ -99,7 +101,7 @@
     }
     .status-pill.open .status-dot { animation: pulse 2s infinite; }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.25} }
- 
+
     .clock-display {
       font-family: 'JetBrains Mono', monospace;
       font-size: 1.9rem;
@@ -107,7 +109,7 @@
       color: var(--text-sub);
       text-align: right;
     }
- 
+
     /* ── Three columns ── */
     .columns {
       display: grid;
@@ -115,7 +117,7 @@
       gap: 20px;
       align-items: start;
     }
- 
+
     /* ── Shared tile ── */
     .tile {
       background: var(--surface);
@@ -146,7 +148,7 @@
       color: var(--text-sub);
     }
     .tile-body { padding: 0.6rem 1.6rem 1.6rem; }
- 
+
     /* ── Hours rows ── */
     .hours-row {
       display: flex;
@@ -184,7 +186,7 @@
     }
     .hours-val.is-closed { color: var(--text-sub); font-style: italic; font-weight: 400; }
     .hours-row.is-today .hours-val { color: var(--today-hl); }
- 
+
     /* ── Manager tile ── */
     .manager-nameplate {
       display: flex;
@@ -207,7 +209,7 @@
     }
     .manager-name { font-size: 1.5rem; font-weight: 600; color: var(--text); }
     .manager-role { font-size: 1rem; color: var(--text-sub); margin-top: 4px; }
- 
+
     .contact-list { display: flex; flex-direction: column; gap: 13px; }
     .contact-row {
       display: flex;
@@ -235,7 +237,7 @@
       color: var(--text-sub);
     }
     .contact-val { font-size: 1.2rem; font-weight: 500; color: var(--text); white-space: pre-line; }
- 
+
     /* ── Staff location tile ── */
     .loc-body {
       padding: 2rem 2.2rem;
@@ -257,7 +259,7 @@
     .loc-icon-wrap.is-open   { background: var(--open-bg);   border: 1.5px solid var(--open);       color: var(--open); }
     .loc-icon-wrap.is-closed { background: var(--closed-bg); border: 1.5px solid var(--closed-clr); color: var(--closed-clr); }
     .loc-icon-wrap.is-away   { background: #2d2208;          border: 1.5px solid #d29922;            color: #d29922; }
- 
+
     .loc-status-label {
       font-size: 0.8rem;
       font-weight: 700;
@@ -275,7 +277,7 @@
     .loc-value.is-open   { color: var(--open); }
     .loc-value.is-closed { color: var(--closed-clr); }
     .loc-value.is-away   { color: #d29922; }
- 
+
     /* ── Footer ── */
     .footer {
       display: flex;
@@ -299,7 +301,7 @@
       transition: background 0.3s;
     }
     .sync-dot.live { background: var(--open); animation: pulse 2s infinite; }
- 
+
     /* ── Skeleton ── */
     .skel {
       background: linear-gradient(90deg, var(--border) 25%, var(--surface2) 50%, var(--border) 75%);
@@ -309,14 +311,14 @@
       display: inline-block;
     }
     @keyframes shimmer { 0%{background-position:200%} 100%{background-position:-200%} }
- 
+
     .error-msg {
       padding: 1.5rem;
       text-align: center;
       color: var(--closed-clr);
       font-size: 1.1rem;
     }
- 
+
     /* ── Responsive ── */
     @media (max-width: 900px) {
       .columns { grid-template-columns: 1fr; }
@@ -327,7 +329,7 @@
 </head>
 <body>
 <div class="page">
- 
+
   <!-- Header -->
   <div class="header">
     <div class="header-left">
@@ -342,10 +344,10 @@
       <div class="clock-display" id="clock"></div>
     </div>
   </div>
- 
+
   <!-- Three columns -->
   <div class="columns">
- 
+
     <!-- COL 1: Hours -->
     <div class="tile">
       <div class="tile-header">
@@ -362,7 +364,7 @@
         </div>
       </div>
     </div>
- 
+
     <!-- COL 2: Lab Manager -->
     <div class="tile">
       <div class="tile-header">
@@ -382,7 +384,7 @@
         <div class="contact-list" id="contactList"></div>
       </div>
     </div>
- 
+
     <!-- COL 3: Staff Location -->
     <div class="tile">
       <div class="tile-header">
@@ -403,9 +405,9 @@
         </div>
       </div>
     </div>
- 
+
   </div>
- 
+
   <!-- Footer -->
   <div class="footer">
     <div class="sync-row">
@@ -414,33 +416,33 @@
     </div>
     <div class="sync-row">Auto-refreshes every 60 seconds</div>
   </div>
- 
+
 </div>
 <script>
   const DAYS       = ['monday','tuesday','wednesday','thursday','friday'];
   const DAY_LABELS = ['Monday','Tuesday','Wednesday','Thursday','Friday'];
   const ALL_DAYS   = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
   const REFRESH_MS = 60000;
- 
+
   // ── Clock ──────────────────────────────────────────────────────────────────
   function tick() {
     document.getElementById('clock').textContent =
       new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
   tick(); setInterval(tick, 1000);
- 
+
   // ── Icons ──────────────────────────────────────────────────────────────────
   const icons = {
     mail:   `<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>`,
     phone:  `<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.45 19.45 0 0 1 5 12.39a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91A16 16 0 0 0 14.09 15.91l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`,
     office: `<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
   };
- 
+
   // SVG paths for location icon states
   const SVG_PIN  = `<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>`;
   const SVG_DOOR = `<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>`;
   const SVG_MOON = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>`;
- 
+
   // ── Render hours ───────────────────────────────────────────────────────────
   function renderHours(hours) {
     const todayKey = ALL_DAYS[new Date().getDay()];
@@ -457,7 +459,7 @@
       </div>`;
     }).join('');
   }
- 
+
   // ── Render status pill ─────────────────────────────────────────────────────
   function renderStatus(hours) {
     const key    = ALL_DAYS[new Date().getDay()];
@@ -469,7 +471,7 @@
       isOpen ? `Open Today  ·  ${val}` : 'Gone for the Day';
     return isOpen;
   }
- 
+
   // ── Render staff location tile ─────────────────────────────────────────────
   // Logic:
   //   Lab is CLOSED (per schedule) → always "Gone for the Day" — cannot be overridden
@@ -480,7 +482,7 @@
     const locVal  = document.getElementById('locValue');
     const locSvg  = document.getElementById('locIconSvg');
     const override = (manager.status || '').trim();
- 
+
     if (!isOpen) {
       // Schedule says closed — hard override, always "Gone for the Day"
       locIcon.className  = 'loc-icon-wrap is-closed';
@@ -501,20 +503,20 @@
       locSvg.innerHTML   = SVG_DOOR;
     }
   }
- 
+
   // ── Render contact ─────────────────────────────────────────────────────────
   function renderContact(manager) {
     const name = manager.name || '—';
     document.getElementById('managerName').textContent = name;
     const initials = name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
     document.getElementById('managerAvatar').textContent = initials || '?';
- 
+
     const items = [
       { label: 'Email',  icon: icons.mail,   val: manager.email  },
       { label: 'Phone',  icon: icons.phone,  val: manager.phone  },
       { label: 'Office', icon: icons.office, val: manager.office },
     ].filter(c => c.val);
- 
+
     document.getElementById('contactList').innerHTML = items.map(c => `
       <div class="contact-row">
         <div class="contact-icon">${c.icon}</div>
@@ -524,12 +526,12 @@
         </div>
       </div>`).join('');
   }
- 
+
   // ── Sync indicator ─────────────────────────────────────────────────────────
   function setSyncing(on) {
     document.getElementById('syncDot').className = `sync-dot ${on ? '' : 'live'}`;
   }
- 
+
   // ── Fetch & render ─────────────────────────────────────────────────────────
   async function loadData() {
     setSyncing(true);
@@ -538,15 +540,15 @@
       const res  = await fetch(`hours.json?t=${Date.now()}`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
- 
+
       document.getElementById('labName').textContent     = data.lab_name || 'Computer Lab';
       document.getElementById('labLocation').textContent = data.location || '';
- 
+
       renderHours(data.hours || {});
       const isOpen = renderStatus(data.hours || {});
       renderContact(data.manager || {});
       renderLocation(isOpen, data.manager || {});
- 
+
       const t = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       document.getElementById('syncText').textContent = `Last synced ${t}`;
       setSyncing(false);
@@ -557,7 +559,7 @@
       setSyncing(true);
     }
   }
- 
+
   loadData();
   setInterval(loadData, REFRESH_MS);
 </script>
