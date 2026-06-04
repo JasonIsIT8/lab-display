@@ -33,39 +33,42 @@
       color: var(--text);
       font-family: 'Outfit', sans-serif;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 2rem 1rem;
+      padding: 2rem 1.5rem;
     }
 
-    /* ── Page layout ── */
+    /* ── Outer wrapper ── */
     .page {
-      width: min(640px, 100%);
+      width: min(1000px, 100%);
       display: flex;
       flex-direction: column;
-      gap: 0;
+      gap: 16px;
     }
 
-    /* ── Header banner ── */
-    .banner {
+    /* ── Top header bar — full width ── */
+    .header {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-bottom: none;
-      border-radius: 14px 14px 0 0;
-      padding: 2.2rem 2.5rem 2rem;
+      border-radius: 14px;
+      padding: 2rem 2.5rem;
       display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
       position: relative;
       overflow: hidden;
     }
-    .banner::after {
+    .header::before {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 3px;
       background: linear-gradient(90deg, var(--accent), #79c0ff, var(--accent));
     }
+
+    .header-left { display: flex; flex-direction: column; gap: 4px; }
 
     .lab-name {
       font-size: 2rem;
@@ -74,27 +77,27 @@
       letter-spacing: -0.02em;
       line-height: 1.1;
     }
-
     .lab-location {
       font-size: 1rem;
-      font-weight: 400;
       color: var(--text-sub);
     }
+
+    .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
 
     .status-pill {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      margin-top: 0.75rem;
-      padding: 8px 18px;
+      padding: 9px 20px;
       border-radius: 999px;
       font-size: 1rem;
       font-weight: 600;
-      width: fit-content;
+      border: 1.5px solid;
+      white-space: nowrap;
       transition: all 0.3s ease;
     }
-    .status-pill.open   { background: var(--open-bg);   color: var(--open);       border: 1.5px solid var(--open); }
-    .status-pill.closed { background: var(--closed-bg); color: var(--closed-clr); border: 1.5px solid var(--closed-clr); }
+    .status-pill.open   { background: var(--open-bg);   color: var(--open);       border-color: var(--open); }
+    .status-pill.closed { background: var(--closed-bg); color: var(--closed-clr); border-color: var(--closed-clr); }
     .status-dot {
       width: 9px; height: 9px;
       border-radius: 50%;
@@ -104,77 +107,83 @@
     .status-pill.open .status-dot { animation: pulse 2s infinite; }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.25} }
 
-    /* ── Section wrapper ── */
-    .section {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-top: none;
-      padding: 0 2.5rem;
-    }
-    .section:last-of-type {
-      border-radius: 0 0 14px 14px;
-      padding-bottom: 2rem;
+    .clock-display {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: var(--text-sub);
+      text-align: right;
     }
 
-    .section-header {
+    /* ── Two-column body ── */
+    .columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    /* ── Shared tile style ── */
+    .tile {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .tile-header {
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 1.6rem 0 1rem;
+      padding: 1.25rem 1.75rem;
       border-bottom: 1px solid var(--border);
-      margin-bottom: 0.25rem;
     }
-    .section-icon {
-      width: 32px; height: 32px;
+    .tile-icon {
+      width: 30px; height: 30px;
       border-radius: 8px;
       background: var(--accent-bg);
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
+      color: var(--accent);
     }
-    .section-icon svg { color: var(--accent); }
-    .section-title {
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--text-sub);
+    .tile-title {
+      font-size: 0.75rem;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.1em;
+      color: var(--text-sub);
     }
+
+    .tile-body { padding: 0.5rem 1.25rem 1.25rem; }
 
     /* ── Hours rows ── */
     .hours-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.95rem 0.75rem;
+      padding: 0.85rem 0.6rem;
       border-radius: 8px;
       margin: 2px 0;
       transition: background 0.15s;
     }
     .hours-row:hover { background: var(--row-hover); }
-    .hours-row.is-today {
-      background: var(--accent-bg);
-    }
+    .hours-row.is-today { background: var(--accent-bg); }
 
-    .day-col {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    .day-col { display: flex; align-items: center; gap: 10px; }
+
     .day-label {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: 500;
       color: var(--text-sub);
     }
-    .hours-row.is-today .day-label {
-      color: var(--today-hl);
-      font-weight: 600;
-    }
+    .hours-row.is-today .day-label { color: var(--today-hl); font-weight: 600; }
+
     .today-badge {
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      padding: 3px 9px;
+      padding: 3px 8px;
       border-radius: 5px;
       background: var(--accent);
       color: #0d1117;
@@ -182,39 +191,31 @@
 
     .hours-val {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 500;
       color: var(--text);
-      text-align: right;
     }
-    .hours-val.is-closed {
-      color: var(--text-sub);
-      font-style: italic;
-      font-weight: 400;
-    }
-    .hours-row.is-today .hours-val {
-      color: var(--today-hl);
+    .hours-val.is-closed { color: var(--text-sub); font-style: italic; font-weight: 400; }
+    .hours-row.is-today .hours-val { color: var(--today-hl); }
+
+    /* ── Right column: stacked tiles ── */
+    .right-col {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
     }
 
-    /* ── Contact section ── */
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.75rem;
-      padding: 1rem 0 0.25rem;
-    }
-
-    .manager-name-row {
-      grid-column: 1 / -1;
+    /* ── Manager tile ── */
+    .manager-nameplate {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 0.75rem 0;
+      gap: 14px;
+      padding: 1.1rem 0 1rem;
       border-bottom: 1px solid var(--border);
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.75rem;
     }
     .avatar {
-      width: 48px; height: 48px;
+      width: 52px; height: 52px;
       border-radius: 12px;
       background: var(--accent-bg);
       border: 1.5px solid var(--accent);
@@ -225,59 +226,97 @@
       flex-shrink: 0;
     }
     .manager-name {
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       font-weight: 600;
       color: var(--text);
     }
     .manager-role {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: var(--text-sub);
-      margin-top: 2px;
+      margin-top: 3px;
     }
 
-    .contact-card {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 0.9rem 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .contact-card-label {
-      font-size: 0.7rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-sub);
+    .contact-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .contact-row {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 12px;
+      padding: 0.7rem 0.9rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 9px;
     }
-    .contact-card-label svg { opacity: 0.6; }
-    .contact-card-val {
+    .contact-icon {
+      width: 32px; height: 32px;
+      border-radius: 7px;
+      background: var(--accent-bg);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      color: var(--accent);
+    }
+    .contact-info { display: flex; flex-direction: column; gap: 2px; }
+    .contact-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: var(--text-sub);
+    }
+    .contact-val {
       font-size: 0.95rem;
       font-weight: 500;
       color: var(--text);
-      word-break: break-all;
+    }
+
+    /* ── Staff location tile ── */
+    .staff-tile .tile-header { border-color: rgba(88,166,255,0.3); }
+    .staff-tile { border-color: rgba(88,166,255,0.25); }
+
+    .staff-location-display {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 1.25rem 1.75rem;
+    }
+    .staff-loc-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      background: var(--accent-bg);
+      border: 1.5px solid var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      color: var(--accent);
+    }
+    .staff-loc-text { display: flex; flex-direction: column; gap: 3px; }
+    .staff-loc-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-sub);
+    }
+    .staff-loc-val {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text);
     }
 
     /* ── Footer ── */
-    .footer-bar {
+    .footer {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1.25rem 2.5rem 0;
+      padding: 0.9rem 1.75rem;
       border-top: 1px solid var(--border);
-      margin-top: 1.5rem;
+      background: var(--surface);
+      border-radius: 14px;
     }
     .sync-row {
-      display: flex;
-      align-items: center;
-      gap: 7px;
+      display: flex; align-items: center; gap: 7px;
       font-size: 0.8rem;
-      color: var(--text-sub);
       font-family: 'JetBrains Mono', monospace;
+      color: var(--text-sub);
     }
     .sync-dot {
       width: 6px; height: 6px;
@@ -286,12 +325,6 @@
       transition: background 0.3s;
     }
     .sync-dot.live { background: var(--open); animation: pulse 2s infinite; }
-    .clock {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 1rem;
-      font-weight: 500;
-      color: var(--text-sub);
-    }
 
     /* ── Skeleton ── */
     .skel {
@@ -299,140 +332,144 @@
       background-size: 200% 100%;
       animation: shimmer 1.5s infinite;
       border-radius: 5px;
+      display: inline-block;
     }
     @keyframes shimmer { 0%{background-position:200%} 100%{background-position:-200%} }
 
     .error-msg {
-      padding: 1.5rem 0;
+      padding: 1.5rem;
       text-align: center;
       color: var(--closed-clr);
       font-size: 0.9rem;
     }
 
-    /* Staff location highlight — shown prominently when closed */
-    .staff-location-banner {
-      display: none;
-      align-items: center;
-      gap: 12px;
-      background: var(--accent-bg);
-      border: 1.5px solid var(--accent);
-      border-radius: 10px;
-      padding: 1rem 1.25rem;
-      margin-top: 1rem;
+    /* ── Responsive: stack on narrow screens ── */
+    @media (max-width: 640px) {
+      .columns { grid-template-columns: 1fr; }
+      .header { flex-direction: column; align-items: flex-start; }
+      .header-right { align-items: flex-start; }
     }
-    .staff-location-banner.visible { display: flex; }
-    .staff-location-banner svg { color: var(--accent); flex-shrink: 0; }
-    .staff-location-banner-text { display: flex; flex-direction: column; gap: 2px; }
-    .staff-location-banner-label {
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--accent);
-    }
-    .staff-location-banner-val {
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    /* Make staff location card span full width */
-    .contact-card.full { grid-column: 1 / -1; }
   </style>
 </head>
 <body>
 <div class="page">
 
-  <!-- Banner -->
-  <div class="banner">
-    <div class="lab-name" id="labName">Loading…</div>
-    <div class="lab-location" id="labLocation"></div>
-    <div class="status-pill closed" id="statusPill">
-      <span class="status-dot"></span>
-      <span id="statusText">Loading…</span>
+  <!-- Full-width header -->
+  <div class="header">
+    <div class="header-left">
+      <div class="lab-name" id="labName">Loading…</div>
+      <div class="lab-location" id="labLocation"></div>
     </div>
-
-    <!-- Staff location banner — only visible when closed -->
-    <div class="staff-location-banner" id="staffBanner">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-      <div class="staff-location-banner-text">
-        <span class="staff-location-banner-label">Staff Currently Located At</span>
-        <span class="staff-location-banner-val" id="staffBannerVal">—</span>
+    <div class="header-right">
+      <div class="status-pill closed" id="statusPill">
+        <span class="status-dot"></span>
+        <span id="statusText">Loading…</span>
       </div>
+      <div class="clock-display" id="clock"></div>
     </div>
   </div>
 
-  <!-- Hours section -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+  <!-- Two columns -->
+  <div class="columns">
+
+    <!-- LEFT: Hours -->
+    <div class="tile">
+      <div class="tile-header">
+        <div class="tile-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <span class="tile-title">Weekly Hours</span>
       </div>
-      <span class="section-title">Weekly Hours</span>
-    </div>
-    <div id="hoursContainer">
-      <div class="hours-row"><span class="skel" style="width:90px;height:16px"></span><span class="skel" style="width:140px;height:16px"></span></div>
-      <div class="hours-row"><span class="skel" style="width:75px;height:16px"></span><span class="skel" style="width:140px;height:16px"></span></div>
-      <div class="hours-row"><span class="skel" style="width:110px;height:16px"></span><span class="skel" style="width:140px;height:16px"></span></div>
+      <div class="tile-body">
+        <div id="hoursContainer">
+          <div class="hours-row"><span class="skel" style="width:85px;height:15px"></span><span class="skel" style="width:130px;height:15px"></span></div>
+          <div class="hours-row"><span class="skel" style="width:70px;height:15px"></span><span class="skel" style="width:130px;height:15px"></span></div>
+          <div class="hours-row"><span class="skel" style="width:100px;height:15px"></span><span class="skel" style="width:130px;height:15px"></span></div>
+        </div>
+      </div>
     </div>
 
-    <!-- Footer inside section -->
-    <div class="footer-bar">
-      <div class="sync-row">
-        <div class="sync-dot" id="syncDot"></div>
-        <span id="syncText">Loading…</span>
+    <!-- RIGHT: stacked tiles -->
+    <div class="right-col">
+
+      <!-- Lab Manager tile -->
+      <div class="tile">
+        <div class="tile-header">
+          <div class="tile-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <span class="tile-title">Lab Manager</span>
+        </div>
+        <div class="tile-body">
+          <div class="manager-nameplate">
+            <div class="avatar" id="managerAvatar">?</div>
+            <div>
+              <div class="manager-name" id="managerName">—</div>
+              <div class="manager-role">Computer Lab Manager</div>
+            </div>
+          </div>
+          <div class="contact-list" id="contactList"></div>
+        </div>
       </div>
-      <div class="clock" id="clock"></div>
+
+      <!-- Staff Location tile -->
+      <div class="tile staff-tile">
+        <div class="tile-header">
+          <div class="tile-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <span class="tile-title">Staff Location</span>
+        </div>
+        <div class="staff-location-display">
+          <div class="staff-loc-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div class="staff-loc-text">
+            <span class="staff-loc-label">Currently Located At</span>
+            <span class="staff-loc-val" id="staffLocVal">—</span>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <!-- Contact section -->
-  <div class="section" style="border-top: 1px solid var(--border); margin-top: 16px; border-radius: 14px;">
-    <div class="section-header">
-      <div class="section-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      </div>
-      <span class="section-title">Lab Manager</span>
+  <!-- Footer -->
+  <div class="footer">
+    <div class="sync-row">
+      <div class="sync-dot" id="syncDot"></div>
+      <span id="syncText">Loading…</span>
     </div>
-
-    <div class="manager-name-row">
-      <div class="avatar" id="managerAvatar">?</div>
-      <div>
-        <div class="manager-name" id="managerName">—</div>
-        <div class="manager-role">Computer Lab Manager</div>
-      </div>
-    </div>
-
-    <div class="contact-grid" id="contactGrid"></div>
+    <div class="sync-row">Auto-refreshes every 60 seconds</div>
   </div>
 
 </div>
 
 <script>
-  const DAYS = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
+  const DAYS       = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
   const DAY_LABELS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const REFRESH_MS = 60000;
 
-  // Clock
+  // ── Clock ──────────────────────────────────────────────────────────────────
   function tick() {
     document.getElementById('clock').textContent =
       new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
   tick(); setInterval(tick, 1000);
 
-  // Icons
+  // ── Icons ──────────────────────────────────────────────────────────────────
   const icons = {
-    mail:   `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>`,
-    phone:  `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.45 19.45 0 0 1 5 12.39a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91A16 16 0 0 0 14.09 15.91l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`,
-    office:   `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
-    location: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+    mail:   `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>`,
+    phone:  `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.45 19.45 0 0 1 5 12.39a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91A16 16 0 0 0 14.09 15.91l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`,
+    office: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
   };
 
+  // ── Render hours ───────────────────────────────────────────────────────────
   function renderHours(hours) {
     const todayKey = DAYS[new Date().getDay()];
     document.getElementById('hoursContainer').innerHTML = DAYS.map((key, i) => {
-      const val = hours[key] || 'Closed';
-      const isToday = key === todayKey;
+      const val      = hours[key] || 'Closed';
+      const isToday  = key === todayKey;
       const isClosed = val.toLowerCase() === 'closed';
       return `<div class="hours-row ${isToday ? 'is-today' : ''}">
         <div class="day-col">
@@ -444,56 +481,55 @@
     }).join('');
   }
 
-  function renderStatus(hours, manager) {
-    const key = DAYS[new Date().getDay()];
-    const val = hours[key] || 'Closed';
+  // ── Render status pill ─────────────────────────────────────────────────────
+  function renderStatus(hours) {
+    const key    = DAYS[new Date().getDay()];
+    const val    = hours[key] || 'Closed';
     const isOpen = val.toLowerCase() !== 'closed';
-    const pill = document.getElementById('statusPill');
+    const pill   = document.getElementById('statusPill');
     pill.className = `status-pill ${isOpen ? 'open' : 'closed'}`;
     document.getElementById('statusText').textContent =
       isOpen ? `Open Today  ·  ${val}` : 'Gone for the Day';
-
-    // Show staff location banner only when closed and location is set
-    const banner = document.getElementById('staffBanner');
-    const staffLoc = manager && manager.staff_location;
-    if (!isOpen && staffLoc) {
-      document.getElementById('staffBannerVal').textContent = staffLoc;
-      banner.classList.add('visible');
-    } else {
-      banner.classList.remove('visible');
-    }
   }
 
+  // ── Render contact ─────────────────────────────────────────────────────────
   function renderContact(manager) {
     const name = manager.name || '—';
     document.getElementById('managerName').textContent = name;
-    // Initials avatar
     const initials = name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
     document.getElementById('managerAvatar').textContent = initials || '?';
 
-    const cards = [
-      { label: 'Email',          icon: icons.mail,     val: manager.email,          full: false },
-      { label: 'Phone',          icon: icons.phone,    val: manager.phone,          full: false },
-      { label: 'Office',         icon: icons.office,   val: manager.office,         full: false },
-      { label: 'Staff Location', icon: icons.location, val: manager.staff_location, full: true  },
+    const items = [
+      { label: 'Email',  icon: icons.mail,   val: manager.email  },
+      { label: 'Phone',  icon: icons.phone,  val: manager.phone  },
+      { label: 'Office', icon: icons.office, val: manager.office },
     ].filter(c => c.val);
 
-    document.getElementById('contactGrid').innerHTML = cards.map(c => `
-      <div class="contact-card ${c.full ? 'full' : ''}">
-        <div class="contact-card-label">${c.icon} ${c.label}</div>
-        <div class="contact-card-val">${c.val}</div>
+    document.getElementById('contactList').innerHTML = items.map(c => `
+      <div class="contact-row">
+        <div class="contact-icon">${c.icon}</div>
+        <div class="contact-info">
+          <span class="contact-label">${c.label}</span>
+          <span class="contact-val">${c.val}</span>
+        </div>
       </div>`).join('');
+
+    // Staff location tile
+    const loc = manager.staff_location || '—';
+    document.getElementById('staffLocVal').textContent = loc;
   }
 
+  // ── Sync indicator ─────────────────────────────────────────────────────────
   function setSyncing(on) {
     document.getElementById('syncDot').className = `sync-dot ${on ? '' : 'live'}`;
   }
 
+  // ── Fetch & render ─────────────────────────────────────────────────────────
   async function loadData() {
     setSyncing(true);
     document.getElementById('syncText').textContent = 'Syncing…';
     try {
-      const res = await fetch(`hours.json?t=${Date.now()}`);
+      const res  = await fetch(`hours.json?t=${Date.now()}`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
 
@@ -501,7 +537,7 @@
       document.getElementById('labLocation').textContent = data.location || '';
 
       renderHours(data.hours   || {});
-      renderStatus(data.hours  || {}, data.manager || {});
+      renderStatus(data.hours  || {});
       renderContact(data.manager || {});
 
       const t = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
