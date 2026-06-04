@@ -1,0 +1,19 @@
+{
+  "lab_name": "Computer Lab",
+  "location": "Building A · Room 204",
+  "hours": {
+    "monday":    "8:00 AM – 9:00 PM",
+    "tuesday":   "8:00 AM – 9:00 PM",
+    "wednesday": "8:00 AM – 9:00 PM",
+    "thursday":  "8:00 AM – 9:00 PM",
+    "friday":    "8:00 AM – 5:00 PM",
+    "saturday":  "10:00 AM – 4:00 PM",
+    "sunday":    "Closed"
+  },
+  "manager": {
+    "name":  "Alex Rivera",
+    "email": "a.rivera@university.edu",
+    "phone": "(561) 555-0194",
+    "office": "Room 204A"
+  }
+}
