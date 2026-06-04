@@ -1,19 +1,19 @@
 {
   "lab_name": "Computer Lab",
-  "location": "Building A · Room 204",
-  "hours": {
-    "monday":    "8:00 AM – 9:00 PM",
-    "tuesday":   "8:00 AM – 9:00 PM",
-    "wednesday": "8:00 AM – 9:00 PM",
-    "thursday":  "8:00 AM – 9:00 PM",
-    "friday":    "8:00 AM – 5:00 PM",
-    "saturday":  "10:00 AM – 4:00 PM",
-    "sunday":    "Closed"
+  "location": "Massey Campus, Building V · Room 116B",
+  "Hours": {
+    "Monday":    "8:00 AM – 9:00 PM",
+    "Tuesday":   "8:00 AM – 9:00 PM",
+    "Wednesday": "8:00 AM – 9:00 PM",
+    "Thursday":  "8:00 AM – 9:00 PM",
+    "Friday":    "Closed",
+    "Saturday":  "Closed",
+    "Sunday":    "Closed"
   },
-  "manager": {
-    "name":  "Alex Rivera",
-    "email": "a.rivera@university.edu",
-    "phone": "(561) 555-0194",
+  "Lab Manager": {
+    "Name":  "Jason Hochmuth",
+    "Email": "jhochmuth1@irsc.edu",
+    "Office Number": "(772) xxx-xxxx",
     "office": "Room 204A"
   }
 }
