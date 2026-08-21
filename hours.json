@@ -2,11 +2,11 @@
   "lab_name": "CIT Computer Lab",
   "location": "Massey Campus, Building V · Room 116B",
   "hours": {
-    "monday":    "12:30 PM – 6:00 PM",
+    "monday":    "9:00 AM – 7:00 PM",
     "tuesday":   "9:00 AM – 7:00 PM",
     "wednesday": "9:00 AM – 7:00 PM",
     "thursday":  "9:00 AM – 7:00 PM",
-    "friday":    "9:00 AM – 7:00 PM"
+    "friday":    "10:00 AM – 3:00 PM"
   },
   "manager": {
     "name":           "Jason Hochmuth",
