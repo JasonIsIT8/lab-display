@@ -176,8 +176,8 @@
 
     /* ── Hours rows ── */
     .hours-row {
-      display: flex;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
       align-items: center;
       padding: 1.05rem 0.75rem;
       border-radius: 10px;
@@ -186,14 +186,15 @@
     }
     .hours-row:hover { background: var(--row-hover); }
     .hours-row.is-today { background: var(--accent-bg); }
-    .day-col { display: flex; align-items: center; gap: 13px; }
     .day-label {
+      justify-self: start;
       font-size: 1.3rem;
       font-weight: 500;
       color: var(--text-sub);
     }
     .hours-row.is-today .day-label { color: var(--today-hl); font-weight: 600; }
     .today-badge {
+      justify-self: center;
       font-size: 0.75rem;
       font-weight: 700;
       text-transform: uppercase;
@@ -204,6 +205,7 @@
       color: #0d1117;
     }
     .hours-val {
+      justify-self: end;
       font-family: 'JetBrains Mono', monospace;
       font-size: 1.2rem;
       font-weight: 500;
@@ -375,9 +377,9 @@
       </div>
       <div class="tile-body">
         <div id="hoursContainer">
-          <div class="hours-row"><span class="skel" style="width:85px;height:15px"></span><span class="skel" style="width:120px;height:15px"></span></div>
-          <div class="hours-row"><span class="skel" style="width:70px;height:15px"></span><span class="skel" style="width:120px;height:15px"></span></div>
-          <div class="hours-row"><span class="skel" style="width:100px;height:15px"></span><span class="skel" style="width:120px;height:15px"></span></div>
+          <div class="hours-row"><span class="skel" style="width:85px;height:15px"></span><span></span><span class="skel" style="width:120px;height:15px"></span></div>
+          <div class="hours-row"><span class="skel" style="width:70px;height:15px"></span><span></span><span class="skel" style="width:120px;height:15px"></span></div>
+          <div class="hours-row"><span class="skel" style="width:100px;height:15px"></span><span></span><span class="skel" style="width:120px;height:15px"></span></div>
         </div>
       </div>
     </div>
@@ -470,10 +472,8 @@
       const isToday  = key === todayKey;
       const isClosed = val.toLowerCase() === 'closed';
       return `<div class="hours-row ${isToday ? 'is-today' : ''}">
-        <div class="day-col">
-          <span class="day-label">${DAY_LABELS[i]}</span>
-          ${isToday ? '<span class="today-badge">Today</span>' : ''}
-        </div>
+        <span class="day-label">${DAY_LABELS[i]}</span>
+        ${isToday ? '<span class="today-badge">Today</span>' : '<span></span>'}
         <span class="hours-val ${isClosed && !isToday ? 'is-closed' : ''}">${val}</span>
       </div>`;
     }).join('');
