@@ -111,13 +111,19 @@
       text-align: right;
     }
 
-    /* ── Three columns ── */
-    .columns {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+    /* ── Column 3 stack: location tile + sync caption ── */
+    .col3-stack {
+      display: flex;
+      flex-direction: column;
       gap: 20px;
-      align-items: stretch;
-      flex: 1;
+    }
+    .col3-stack .tile { flex: 1; }
+    .sync-caption {
+      justify-content: center;
+      padding: 0.85rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
     }
 
     /* ── Shared tile ── */
@@ -387,7 +393,8 @@
       </div>
     </div>
 
-    <!-- COL 3: Staff Location -->
+    <!-- COL 3: Staff Location + sync caption -->
+    <div class="col3-stack">
     <div class="tile">
       <div class="tile-header">
         <div class="tile-icon">
@@ -408,14 +415,16 @@
       </div>
     </div>
 
-  </div>
-
-  <!-- Footer -->
-  <div class="footer">
-    <div class="sync-row">
+    <div class="sync-row sync-caption">
       <div class="sync-dot" id="syncDot"></div>
       <span id="syncText">Loading…</span>
     </div>
+
+    </div>
+
+  </div>
+  <!-- Footer -->
+  <div class="footer">
     <div class="sync-row">Auto-refreshes every 60 seconds</div>
   </div>
 
