@@ -128,11 +128,19 @@
     }
     .col3-stack .tile { flex: 1; }
     .sync-caption {
-      justify-content: center;
-      padding: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      padding: 1rem;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 14px;
+    }
+    .sync-sub {
+      font-size: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-sub);
     }
 
     /* ── Shared tile ── */
@@ -296,16 +304,7 @@
     .loc-value.is-closed { color: var(--closed-clr); }
     .loc-value.is-away   { color: #d29922; }
 
-    /* ── Footer ── */
-    .footer {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 1.1rem 2.2rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-    }
+    /* ── Sync row (inside caption) ── */
     .sync-row {
       display: flex; align-items: center; gap: 8px;
       font-size: 1rem;
@@ -425,18 +424,16 @@
       </div>
     </div>
 
-    <div class="sync-row sync-caption">
-      <div class="sync-dot" id="syncDot"></div>
-      <span id="syncText">Loading…</span>
+    <div class="sync-caption">
+      <div class="sync-row">
+        <div class="sync-dot" id="syncDot"></div>
+        <span id="syncText">Loading…</span>
+      </div>
+      <div class="sync-sub">Auto-refreshes every 60 seconds</div>
     </div>
 
     </div>
 
-  </div>
-
-  <!-- Footer -->
-  <div class="footer">
-    <div class="sync-row">Auto-refreshes every 60 seconds</div>
   </div>
 
 </div>
