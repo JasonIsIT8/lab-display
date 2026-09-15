@@ -120,13 +120,42 @@
       flex: 1;
     }
 
+    /* ── Column 1 stack: hours tile + date tile ── */
+    .col1-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .col1-stack > .tile:first-child { flex: 1; }
+    .date-body {
+      padding: 1.6rem 2.2rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 0.5rem;
+    }
+    .date-dow {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1.1;
+    }
+    .date-full {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.35rem;
+      font-weight: 500;
+      color: var(--text-sub);
+    }
+
     /* ── Column 3 stack: location tile + sync caption ── */
     .col3-stack {
       display: flex;
       flex-direction: column;
       gap: 20px;
     }
-    .col3-stack .tile { flex: 1; }
+    .col3-stack .tile { flex: 1; display: flex; flex-direction: column; }
     .sync-caption {
       display: flex;
       flex-direction: column;
@@ -267,36 +296,37 @@
 
     /* ── Staff location tile ── */
     .loc-body {
-      padding: 2rem 2.2rem;
+      flex: 1;
+      padding: 3rem 2.2rem;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 1.25rem;
+      gap: 2rem;
       text-align: center;
-      min-height: 200px;
-      height: 100%;
     }
     .loc-icon-wrap {
-      width: 75px; height: 75px;
-      border-radius: 20px;
+      width: 130px; height: 130px;
+      border-radius: 30px;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
       transition: background 0.4s, border-color 0.4s;
     }
+    .loc-icon-wrap svg { width: 62px; height: 62px; }
     .loc-icon-wrap.is-open   { background: var(--open-bg);   border: 1.5px solid var(--open);       color: var(--open); }
     .loc-icon-wrap.is-closed { background: var(--closed-bg); border: 1.5px solid var(--closed-clr); color: var(--closed-clr); }
     .loc-icon-wrap.is-away   { background: #2d2208;          border: 1.5px solid #d29922;            color: #d29922; }
 
     .loc-status-label {
-      font-size: 0.8rem;
+      font-size: 1rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.12em;
       color: var(--text-sub);
     }
     .loc-value {
-      font-size: 1.65rem;
+      margin-top: 0.6rem;
+      font-size: 2.6rem;
       font-weight: 700;
       color: var(--text);
       line-height: 1.2;
@@ -367,7 +397,8 @@
   <!-- Three columns -->
   <div class="columns">
 
-    <!-- COL 1: Hours -->
+    <!-- COL 1: Hours + Today's Date -->
+    <div class="col1-stack">
     <div class="tile">
       <div class="tile-header">
         <div class="tile-icon">
@@ -382,6 +413,22 @@
           <div class="hours-row"><span class="skel" style="width:100px;height:15px"></span><span></span><span class="skel" style="width:120px;height:15px"></span></div>
         </div>
       </div>
+    </div>
+
+    <!-- Today's Date tile -->
+    <div class="tile">
+      <div class="tile-header">
+        <div class="tile-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <span class="tile-title">Today's Date</span>
+      </div>
+      <div class="date-body">
+        <div class="date-dow" id="dateDow">—</div>
+        <div class="date-full" id="dateFull">—</div>
+      </div>
+    </div>
+
     </div>
 
     <!-- COL 2: Lab Manager -->
@@ -447,8 +494,13 @@
 
   // ── Clock ──────────────────────────────────────────────────────────────────
   function tick() {
+    const now = new Date();
     document.getElementById('clock').textContent =
-      new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+    document.getElementById('dateDow').textContent =
+      now.toLocaleDateString('en-US', { weekday: 'long' });
+    document.getElementById('dateFull').textContent =
+      now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
   }
   tick(); setInterval(tick, 1000);
 
@@ -622,7 +674,7 @@
       renderContact(data.manager || {});
       renderLocation(timeState, data.manager || {});
 
-      const t = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const t = new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
       document.getElementById('syncText').textContent = `Last synced ${t}`;
       setSyncing(false);
     } catch (err) {
